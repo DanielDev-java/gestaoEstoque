@@ -3,10 +3,17 @@ package com.dev.backend.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.dev.backend.entities.Product;
 import com.dev.backend.repositories.ProductRepository;
+import com.dev.backend.services.exceptions.DatabaseException;
+import com.dev.backend.services.exceptions.InvalidQuantityException;
+import com.dev.backend.services.exceptions.ResourceNotFoundException;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class ProductService {
@@ -18,7 +25,7 @@ public class ProductService {
     }
 
     public Product findById(Long id) {
-        return repository.findById(id).get();
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public Product insert(Product entity) {
@@ -26,23 +33,45 @@ public class ProductService {
     }
 
     public void delete(Long id) {
-        repository.deleteById(id);
+        try {
+            repository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException(e.getMessage());
+        }
     }
 
     public Product update(Long id, Product product) {
-        Product entity = repository.getReferenceById(id);
-        updateData(entity, product);
-        return repository.save(entity);
+        try {
+            Product entity = repository.getReferenceById(id);
+            updateData(entity, product);
+            return repository.save(entity);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException(id);
+        }
     }
 
     public Product addStock(Long id, Integer quantity) {
-        Product entity = repository.findById(id).get();
+        if (quantity <= 0) {
+            throw new InvalidQuantityException("The quantity must be greater than zero.");
+        }
+        Product entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+        if (entity.getQuantity() + quantity > entity.getMaximumStock()) {
+            throw new InvalidQuantityException("Stock maximum value exceeded.");
+        }
         entity.addStock(quantity);
         return repository.save(entity);
     }
 
     public Product removeStock(Long id, Integer quantity) {
-        Product entity = repository.findById(id).get();
+        if (quantity <= 0) {
+            throw new InvalidQuantityException("The quantity must be greater than zero.");
+        }
+        Product entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+        if (entity.getQuantity() - quantity < entity.getMinimumStock()) {
+            throw new InvalidQuantityException("Stock minimum value exceeded.");
+        }
         entity.removeStock(quantity);
         return repository.save(entity);
     }

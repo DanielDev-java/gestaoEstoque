@@ -1,5 +1,6 @@
 package com.dev.backend.controllers;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.dev.backend.entities.Product;
 import com.dev.backend.services.ProductService;
@@ -37,7 +39,8 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<Product> insert(@RequestBody Product entity) {
         entity = service.insert(entity);
-        return ResponseEntity.ok().body(entity);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(entity.getId()).toUri();
+        return ResponseEntity.created(uri).body(entity);
     }
 
     @DeleteMapping(value = "/{id}")
