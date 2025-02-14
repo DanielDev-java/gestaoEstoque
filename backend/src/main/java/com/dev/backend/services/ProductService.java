@@ -3,10 +3,12 @@ package com.dev.backend.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.dev.backend.entities.Product;
 import com.dev.backend.repositories.ProductRepository;
 
+@Service
 public class ProductService {
     @Autowired
     private ProductRepository repository;
