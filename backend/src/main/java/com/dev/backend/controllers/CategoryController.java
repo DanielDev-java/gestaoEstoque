@@ -19,7 +19,7 @@ import com.dev.backend.entities.Category;
 import com.dev.backend.services.CategoryService;
 
 @RestController
-@RequestMapping(value = "/category")
+@RequestMapping(value = "/categories")
 public class CategoryController {
     @Autowired
     private CategoryService service;
