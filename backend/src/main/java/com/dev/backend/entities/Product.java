@@ -2,13 +2,18 @@ package com.dev.backend.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +22,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "product")
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
@@ -36,6 +40,29 @@ public class Product implements Serializable {
     private Integer maximumStock;
     private Integer quantity;
     private LocalDate expirationDate;
+
+    @ManyToMany
+    @JoinTable(
+        name = "product_category", 
+        joinColumns = @JoinColumn(name = "id_product"), 
+        inverseJoinColumns = @JoinColumn(name = "id_category")
+    )
+    @Setter(value = AccessLevel.NONE)
+    private Set<Category> categories = new HashSet<>();
+
+    public Product(Long id, String name, String description, String unitMeasure, Double costPrice, Double salePrice,
+            Integer minimumStock, Integer maximumStock, Integer quantity, LocalDate expirationDate) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.unitMeasure = unitMeasure;
+        this.costPrice = costPrice;
+        this.salePrice = salePrice;
+        this.minimumStock = minimumStock;
+        this.maximumStock = maximumStock;
+        this.quantity = quantity;
+        this.expirationDate = expirationDate;
+    }
 
     public void addStock(Integer quantity) {
         this.quantity += quantity;
