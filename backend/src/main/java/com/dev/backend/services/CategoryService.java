@@ -7,8 +7,10 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.dev.backend.dtos.CategoryDTO;
 import com.dev.backend.dtos.ProductDTO;
 import com.dev.backend.entities.Category;
+import com.dev.backend.projections.CategoryProjection;
 import com.dev.backend.projections.ProductProjection;
 import com.dev.backend.repositories.CategoryRepository;
 import com.dev.backend.services.exceptions.DatabaseException;
@@ -54,8 +56,14 @@ public class CategoryService {
     }
 
     public List<ProductDTO> findByCategory(Long idCategory) {
-        List<ProductProjection> suppliers = repository.searchByCategory(idCategory);
-        List<ProductDTO> dto = suppliers.stream().map(x -> new ProductDTO(x)).toList();
+        List<ProductProjection> products = repository.searchByCategory(idCategory);
+        List<ProductDTO> dto = products.stream().map(x -> new ProductDTO(x)).toList();
+        return dto;
+    }
+
+    public List<CategoryDTO> findByNameCategory(String nameCategory) {
+        List<CategoryProjection> categories = repository.searchByNameCategory(nameCategory);
+        List<CategoryDTO> dto = categories.stream().map(x -> new CategoryDTO(x)).toList();
         return dto;
     }
 

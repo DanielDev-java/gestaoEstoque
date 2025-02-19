@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.dev.backend.dtos.CategoryDTO;
 import com.dev.backend.dtos.ProductDTO;
 import com.dev.backend.entities.Category;
 import com.dev.backend.services.CategoryService;
@@ -57,9 +58,15 @@ public class CategoryController {
     }
 
     @GetMapping(value = "/{idCategory}/products")
-    public ResponseEntity<List<ProductDTO>> findBySupplier(@PathVariable Long idCategory) {
-        List<ProductDTO> suppliers = service.findByCategory(idCategory);
-        return ResponseEntity.ok().body(suppliers);
+    public ResponseEntity<List<ProductDTO>> findByCategory(@PathVariable Long idCategory) {
+        List<ProductDTO> products = service.findByCategory(idCategory);
+        return ResponseEntity.ok().body(products);
+    }
+
+    @GetMapping(value = "/names/{nameCategory}")
+    public ResponseEntity<List<CategoryDTO>> findByNameCategory(@PathVariable String nameCategory) {
+        List<CategoryDTO> categories = service.findByNameCategory(nameCategory);
+        return ResponseEntity.ok().body(categories);
     }
 
 }

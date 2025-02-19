@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.dev.backend.entities.Category;
+import com.dev.backend.projections.CategoryProjection;
 import com.dev.backend.projections.ProductProjection;
 
 @Repository
@@ -30,5 +31,14 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
         ORDER BY product.name;
     """)
     List<ProductProjection> searchByCategory(Long idCategory);
+
+    @Query(nativeQuery = true, value = """
+        SELECT * FROM
+	        category
+        WHERE
+	        UPPER(category.name)
+        LIKE UPPER(CONCAT('%',:nameCategory,'%'))
+    """)
+    List<CategoryProjection> searchByNameCategory(String nameCategory);
 
 }
