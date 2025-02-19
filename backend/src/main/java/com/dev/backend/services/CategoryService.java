@@ -7,7 +7,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.dev.backend.dtos.ProductDTO;
 import com.dev.backend.entities.Category;
+import com.dev.backend.projections.ProductProjection;
 import com.dev.backend.repositories.CategoryRepository;
 import com.dev.backend.services.exceptions.DatabaseException;
 import com.dev.backend.services.exceptions.ResourceNotFoundException;
@@ -49,6 +51,12 @@ public class CategoryService {
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException(id);
         }
+    }
+
+    public List<ProductDTO> findByCategory(Long idCategory) {
+        List<ProductProjection> suppliers = repository.searchByCategory(idCategory);
+        List<ProductDTO> dto = suppliers.stream().map(x -> new ProductDTO(x)).toList();
+        return dto;
     }
 
     private void updateData(Category entitiy, Category category) {

@@ -29,5 +29,5 @@ public interface SupplierRepository extends JpaRepository<Supplier, Long> {
             supplier.id = :idSupplier
         ORDER BY product.name;
     """)
-    List<ProductProjection> searchBySupplier(Long idSupplier);;
+    List<ProductProjection> searchBySupplier(Long idSupplier);
 }
