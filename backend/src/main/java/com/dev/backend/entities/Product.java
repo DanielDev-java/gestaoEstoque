@@ -50,6 +50,15 @@ public class Product implements Serializable {
     @Setter(value = AccessLevel.NONE)
     private Set<Category> categories = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(
+        name = "product_supplier", 
+        joinColumns = @JoinColumn(name = "id_product"), 
+        inverseJoinColumns = @JoinColumn(name = "id_supplier")
+    )
+    @Setter(value = AccessLevel.NONE)
+    private Set<Supplier> suppliers = new HashSet<>();
+
     public Product(Long id, String name, String description, String unitMeasure, Double costPrice, Double salePrice,
             Integer minimumStock, Integer maximumStock, Integer quantity, LocalDate expirationDate) {
         this.id = id;
