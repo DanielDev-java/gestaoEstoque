@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.dev.backend.dtos.ProductDTO;
 import com.dev.backend.entities.Product;
 import com.dev.backend.services.ProductService;
 
@@ -66,4 +67,11 @@ public class ProductController {
         Product entity = service.removeStock(id, quantity);
         return ResponseEntity.ok().body(entity);
     }
+
+    @GetMapping(value = "/names/{nameProduct}")
+    public ResponseEntity<List<ProductDTO>> findByNameProduct(@PathVariable String nameProduct) {
+        List<ProductDTO> suppliers = service.findByNameProduct(nameProduct);
+        return ResponseEntity.ok().body(suppliers);
+    }
+
 }

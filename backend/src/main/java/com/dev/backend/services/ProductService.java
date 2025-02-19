@@ -7,7 +7,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.dev.backend.dtos.ProductDTO;
 import com.dev.backend.entities.Product;
+import com.dev.backend.projections.ProductProjection;
 import com.dev.backend.repositories.ProductRepository;
 import com.dev.backend.services.exceptions.DatabaseException;
 import com.dev.backend.services.exceptions.InvalidQuantityException;
@@ -74,6 +76,12 @@ public class ProductService {
         }
         entity.removeStock(quantity);
         return repository.save(entity);
+    }
+
+    public List<ProductDTO> findByNameProduct(String nameProduct) {
+        List<ProductProjection> suppliers = repository.searchByNameProduct(nameProduct);
+        List<ProductDTO> dto = suppliers.stream().map(x -> new ProductDTO(x)).toList();
+        return dto;
     }
 
     private void updateData(Product entitiy, Product product) {
