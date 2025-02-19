@@ -7,7 +7,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.dev.backend.dtos.ProductSupplierDTO;
 import com.dev.backend.entities.Supplier;
+import com.dev.backend.projections.ProductSupplierProjection;
 import com.dev.backend.repositories.SupplierRepository;
 import com.dev.backend.services.exceptions.DatabaseException;
 import com.dev.backend.services.exceptions.ResourceNotFoundException;
@@ -49,6 +51,12 @@ public class SupplierService {
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException(id);
         }
+    }
+
+    public List<ProductSupplierDTO> findBySupplier(Long idSupplier) {
+        List<ProductSupplierProjection> suppliers = repository.searchBySupplier(idSupplier);
+        List<ProductSupplierDTO> dto = suppliers.stream().map(x -> new ProductSupplierDTO(x)).toList();
+        return dto;
     }
 
     private void updateData(Supplier entitiy, Supplier supplier) {

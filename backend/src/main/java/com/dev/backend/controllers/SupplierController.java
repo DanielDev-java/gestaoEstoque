@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.dev.backend.dtos.ProductSupplierDTO;
 import com.dev.backend.entities.Supplier;
 import com.dev.backend.services.SupplierService;
 
@@ -53,6 +54,12 @@ public class SupplierController {
     public ResponseEntity<Supplier> update(@PathVariable Long id, @RequestBody Supplier entity) {
         entity = service.update(id, entity);
         return ResponseEntity.ok().body(entity);
+    }
+
+    @GetMapping(value = "/{idSupplier}/products")
+    public ResponseEntity<List<ProductSupplierDTO>> findBySupplier(@PathVariable Long idSupplier) {
+        List<ProductSupplierDTO> suppliers = service.findBySupplier(idSupplier);
+        return ResponseEntity.ok().body(suppliers);
     }
 
 }
