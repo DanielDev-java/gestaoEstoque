@@ -27,22 +27,21 @@ public class DevConfig implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Product p1 = new Product(null, "Café", "Café Brasileiro", "g", 8.50, 17.00, 5, 85, 30,
-                LocalDate.parse("2025-06-20"));
-        Product p2 = new Product(null, "Cuscuz", "Cuscuz Brasileiro", "kg", 0.50, 3.00, 1, 50, 30,
-                LocalDate.parse("2025-06-20"));
-        productRepository.saveAll(Arrays.asList(p1,p2));
-
         Category c1 = new Category(null, "Café", "Category Cafe");
         categoryRepository.save(c1);
 
         Supplier s1 = new Supplier(null, "test", "(88) 998547-5893", "test@test.com");
         supplierRepository.save(s1);
 
+        Product p1 = new Product(null, "Café", "Café Brasileiro", "g", 8.50, 17.00, 5, 85, 30,
+                LocalDate.parse("2025-06-20"));
+        Product p2 = new Product(null, "Cuscuz", "Cuscuz Brasileiro", "kg", 0.50, 3.00, 1, 50, 30,
+                LocalDate.parse("2025-06-20"));
+
         p1.getCategories().add(c1);
         p1.getSuppliers().add(s1);
         p2.getSuppliers().add(s1);
-        productRepository.saveAll(Arrays.asList(p1,p2));
+        productRepository.saveAll(Arrays.asList(p1, p2));
     }
 
 }

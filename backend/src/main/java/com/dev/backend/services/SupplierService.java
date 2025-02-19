@@ -7,9 +7,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import com.dev.backend.dtos.ProductSupplierDTO;
+import com.dev.backend.dtos.ProductDTO;
 import com.dev.backend.entities.Supplier;
-import com.dev.backend.projections.ProductSupplierProjection;
+import com.dev.backend.projections.ProductProjection;
 import com.dev.backend.repositories.SupplierRepository;
 import com.dev.backend.services.exceptions.DatabaseException;
 import com.dev.backend.services.exceptions.ResourceNotFoundException;
@@ -53,9 +53,9 @@ public class SupplierService {
         }
     }
 
-    public List<ProductSupplierDTO> findBySupplier(Long idSupplier) {
-        List<ProductSupplierProjection> suppliers = repository.searchBySupplier(idSupplier);
-        List<ProductSupplierDTO> dto = suppliers.stream().map(x -> new ProductSupplierDTO(x)).toList();
+    public List<ProductDTO> findBySupplier(Long idSupplier) {
+        List<ProductProjection> suppliers = repository.searchBySupplier(idSupplier);
+        List<ProductDTO> dto = suppliers.stream().map(x -> new ProductDTO(x)).toList();
         return dto;
     }
 
