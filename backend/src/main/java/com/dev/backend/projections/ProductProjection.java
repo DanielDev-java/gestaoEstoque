@@ -1,7 +1,5 @@
 package com.dev.backend.projections;
 
-import java.time.LocalDate;
-
 public interface ProductProjection {
 
     Long getId();
@@ -22,5 +20,4 @@ public interface ProductProjection {
 
     Integer getQuantity();
 
-    LocalDate getExpirationDate();
 }

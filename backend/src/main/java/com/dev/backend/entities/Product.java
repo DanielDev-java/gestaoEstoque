@@ -1,8 +1,9 @@
 package com.dev.backend.entities;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.Entity;
@@ -39,7 +40,6 @@ public class Product implements Serializable {
     private Integer minimumStock;
     private Integer maximumStock;
     private Integer quantity;
-    private LocalDate expirationDate;
 
     @ManyToMany
     @JoinTable(
@@ -59,8 +59,17 @@ public class Product implements Serializable {
     @Setter(value = AccessLevel.NONE)
     private Set<Supplier> suppliers = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(
+        name = "product_batch", 
+        joinColumns = @JoinColumn(name = "id_product"), 
+        inverseJoinColumns = @JoinColumn(name = "id_batch")
+    )
+    @Setter(value = AccessLevel.NONE)
+    private List<Batch> batchs = new ArrayList<>();
+
     public Product(Long id, String name, String description, String unitMeasure, Double costPrice, Double salePrice,
-            Integer minimumStock, Integer maximumStock, Integer quantity, LocalDate expirationDate) {
+            Integer minimumStock, Integer maximumStock, Integer quantity) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -70,7 +79,6 @@ public class Product implements Serializable {
         this.minimumStock = minimumStock;
         this.maximumStock = maximumStock;
         this.quantity = quantity;
-        this.expirationDate = expirationDate;
     }
 
     public void addStock(Integer quantity) {

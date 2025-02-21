@@ -1,7 +1,5 @@
 package com.dev.backend.dtos;
 
-import java.time.LocalDate;
-
 import org.springframework.beans.BeanUtils;
 
 import com.dev.backend.projections.ProductProjection;
@@ -23,7 +21,6 @@ public class ProductDTO {
     private Integer minimumStock;
     private Integer maximumStock;
     private Integer quantity;
-    private LocalDate expirationDate;
 
     public ProductDTO(ProductProjection entity) {
         BeanUtils.copyProperties(entity, this);

@@ -18,7 +18,7 @@ public interface SupplierRepository extends JpaRepository<Supplier, Long> {
             product.description, product.unit_measure,
             product.cost_price, product.sale_price,
             product.minimum_stock, product.maximum_stock,
-            product.quantity, product.expiration_date
+            product.quantity
         FROM 
             product
         INNER JOIN 
