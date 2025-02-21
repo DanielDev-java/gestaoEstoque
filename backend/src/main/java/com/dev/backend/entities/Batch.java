@@ -34,6 +34,7 @@ public class Batch implements Serializable {
     private LocalDate manufactureDate;
     private LocalDate expirationDate;
     private String storageConditions;
+    @Getter(value = AccessLevel.NONE)
     private boolean approvedQuality;
 
     @JsonIgnore
@@ -47,7 +48,11 @@ public class Batch implements Serializable {
         this.manufactureDate = manufactureDate;
         this.expirationDate = expirationDate;
         this.storageConditions = storageConditions;
-        this.approvedQuality = approvedQuality;
     }
 
+    public boolean getApprovedQuality() {
+        return approvedQuality;
+    }
+
+    
 }
