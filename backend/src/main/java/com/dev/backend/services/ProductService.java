@@ -9,10 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.dev.backend.dtos.ProductDTO;
 import com.dev.backend.entities.Product;
-import com.dev.backend.entities.Stock;
 import com.dev.backend.projections.ProductProjection;
 import com.dev.backend.repositories.ProductRepository;
-import com.dev.backend.repositories.StockRepository;
 import com.dev.backend.services.exceptions.DatabaseException;
 import com.dev.backend.services.exceptions.InvalidQuantityException;
 import com.dev.backend.services.exceptions.ResourceNotFoundException;
@@ -24,7 +22,7 @@ public class ProductService {
     @Autowired
     private ProductRepository repository;
     @Autowired
-    private StockRepository stockRepository;
+    private StockService stockService;
 
     public List<Product> findAll() {
         return repository.findAll();
@@ -67,9 +65,7 @@ public class ProductService {
             throw new InvalidQuantityException("Stock maximum value exceeded.");
         }
         entity.addStock(quantity);
-        Stock stock = entity.getStock();
-        stock.reloadData();
-        stockRepository.save(stock);
+        stockService.update(entity.getStock().getId());
         return repository.save(entity);
     }
 
@@ -82,9 +78,7 @@ public class ProductService {
             throw new InvalidQuantityException("Stock minimum value exceeded.");
         }
         entity.removeStock(quantity);
-        Stock stock = entity.getStock();
-        stock.reloadData();
-        stockRepository.save(stock);
+        stockService.update(entity.getStock().getId());
         return repository.save(entity);
     }
 
