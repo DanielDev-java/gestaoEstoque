@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -40,6 +43,11 @@ public class Product implements Serializable {
     private Integer minimumStock;
     private Integer maximumStock;
     private Integer quantity;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "id_stock")
+    private Stock stock;
 
     @ManyToMany
     @JoinTable(
@@ -69,7 +77,7 @@ public class Product implements Serializable {
     private List<Batch> batchs = new ArrayList<>();
 
     public Product(Long id, String name, String description, String unitMeasure, Double costPrice, Double salePrice,
-            Integer minimumStock, Integer maximumStock, Integer quantity) {
+            Integer minimumStock, Integer maximumStock, Integer quantity,Stock stock) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -79,6 +87,7 @@ public class Product implements Serializable {
         this.minimumStock = minimumStock;
         this.maximumStock = maximumStock;
         this.quantity = quantity;
+        this.stock = stock;
     }
 
     public void addStock(Integer quantity) {
